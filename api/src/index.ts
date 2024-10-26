@@ -9,6 +9,7 @@ import homeRoute from "./Routes/homeRoute";
 import connectDB from "./Database/connectDB";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
 dotenv.config();
 
 const app: Express = express();
@@ -19,15 +20,13 @@ app.use(
   })
 );
 app.use(cookieParser());
-const port = process.env.PORT || 8080;
-// Middleware to parse JSON bodies
 app.use(express.json());
 connectDB();
-// Use the auth routes
+
+// Routes
 app.get("/", (req: Request, res: Response) => {
   res.send("HELLO, Are you there?");
 });
-
 app.use("/api/auth", authRoutes);
 app.use("/api/income", incomeRoute);
 app.use("/api/expense", expenseRoute);
@@ -35,6 +34,5 @@ app.use("/api/saving", savingRoute);
 app.use("/api/user", userRoute);
 app.use("/api/home", homeRoute);
 
-app.listen(port, () => {
-  console.log(`[server]: Server is running at http://localhost:${port}`);
-});
+// Export the app as a module for serverless function
+export default app;
